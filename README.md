@@ -144,7 +144,7 @@ The system is built using the following components:
 3. Clone the repository:
 
    ```bash
-   git clone https://github.com/yourusername/otp-auth.git
+   git clone https://github.com/lilokie990/otp.git
    cd otp-auth
    ```
 
