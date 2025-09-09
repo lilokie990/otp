@@ -262,22 +262,6 @@ The project already includes pre-generated Swagger documentation in the `/docs` 
 - `/docs/swagger/swagger.json` - OpenAPI spec in JSON format
 - `/docs/swagger/swagger.yaml` - OpenAPI spec in YAML format
 
-### Updating Swagger Documentation
-
-When you make changes to API endpoints, you need to regenerate the Swagger documentation:
-
-1. Make sure you have the Swagger tools installed:
-
-   ```bash
-   go install github.com/swaggo/swag/cmd/swag@latest
-   ```
-
-2. Generate the documentation from your API annotations:
-
-   ```bash
-   swag init -g cmd/main.go -d ./ -o ./docs/swagger
-   ```
-
 ### Accessing Swagger UI
 
 Once the application is running, you can access the Swagger UI at:
