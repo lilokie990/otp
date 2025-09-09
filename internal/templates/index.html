@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>OTP Authentication API</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin-right: 10px;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: #45a049;
+        }
+
+        pre {
+            background: #f4f4f4;
+            padding: 15px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Welcome to OTP Authentication API</h1>
+    <p>This is a RESTful API for OTP-based authentication.</p>
+
+    <h2>Main Features:</h2>
+    <ul>
+        <li>OTP-based login and registration</li>
+        <li>Rate limiting</li>
+        <li>JWT authentication</li>
+        <li>User management with pagination and search</li>
+    </ul>
+
+    <h2>Quick Links:</h2>
+    <a href="/swagger/index.html" class="btn">API Documentation</a>
+    <a href="/api" class="btn">API Info</a>
+    <a href="/health" class="btn">Health Check</a>
+
+    <h2>Example Request:</h2>
+    <pre>
+curl -X POST {{.BaseURL}}/v1/auth/request-otp \
+  -H "Content-Type: application/json" \
+  -d '{"phone_number": "+1234567890"}'
+    </pre>
+</body>
+
+</html>

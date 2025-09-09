@@ -1,0 +1,32 @@
+service:
+  name: "otp-auth-service"
+  env: "local"
+  gracefulShutdownSecond: 5
+  http:
+    port: "8088"
+
+postgres:
+  host: "localhost"
+  port: "5432"
+  user: "postgres"
+  password: "postgres"
+  databaseName: "otpauth"
+  sslMode: "disable"
+  timeZone: "UTC"
+
+redis:
+  host: "localhost"
+  port: "6379"
+  password: ""
+  db: 0
+
+jwt:
+  secret: "local-dev-secret-key"
+  expirationHours: 24
+
+otp:
+  expiration: 300 # 5 minutes for local testing
+  length: 6
+  rateLimit:
+    count: 5 # More lenient for local development
+    time: 10 # minutes

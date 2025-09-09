@@ -1,0 +1,220 @@
+basePath: /
+definitions:
+  models.ErrorResponse:
+    properties:
+      error:
+        type: string
+    type: object
+  models.RequestOTPRequest:
+    properties:
+      phone_number:
+        type: string
+    required:
+    - phone_number
+    type: object
+  models.RequestOTPResponse:
+    properties:
+      message:
+        description: OTP is now only printed to console logs
+        type: string
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      phone_number:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.UserResponse:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: string
+      phone_number:
+        type: string
+    type: object
+  models.UsersListResponse:
+    properties:
+      page:
+        type: integer
+      page_size:
+        type: integer
+      total_count:
+        type: integer
+      users:
+        items:
+          $ref: '#/definitions/models.UserResponse'
+        type: array
+    type: object
+  models.VerifyOTPRequest:
+    properties:
+      otp:
+        type: string
+      phone_number:
+        type: string
+    required:
+    - otp
+    - phone_number
+    type: object
+  models.VerifyOTPResponse:
+    properties:
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: A RESTful API for OTP-based authentication
+  title: OTP Authentication API
+  version: "1.0"
+paths:
+  /auth/request-otp:
+    post:
+      consumes:
+      - application/json
+      description: Generate and send a one-time password to the provided phone number
+        (OTP is printed to server logs)
+      parameters:
+      - description: Phone number to send OTP to
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.RequestOTPRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OTP sent successfully
+          schema:
+            $ref: '#/definitions/models.RequestOTPResponse'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "429":
+          description: Rate limit exceeded
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Request OTP for a phone number
+      tags:
+      - auth
+  /auth/verify-otp:
+    post:
+      consumes:
+      - application/json
+      description: Verify the OTP provided for a phone number and return a JWT token
+      parameters:
+      - description: Phone number and OTP to verify
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/models.VerifyOTPRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OTP verified successfully
+          schema:
+            $ref: '#/definitions/models.VerifyOTPResponse'
+        "400":
+          description: Invalid request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "401":
+          description: Invalid or expired OTP
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Verify OTP for a phone number
+      tags:
+      - auth
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: List users with pagination and optional search
+      parameters:
+      - description: 'Page number (default: 1)'
+        in: query
+        name: page
+        type: integer
+      - description: 'Page size (default: 10)'
+        in: query
+        name: page_size
+        type: integer
+      - description: Search term for phone number
+        in: query
+        name: search
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of users
+          schema:
+            $ref: '#/definitions/models.UsersListResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: List users
+      tags:
+      - users
+  /users/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a user's details by their ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: User details
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+        "400":
+          description: Invalid user ID
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "404":
+          description: User not found
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Get user by ID
+      tags:
+      - users
+schemes:
+- http
+securityDefinitions:
+  BearerAuth:
+    description: Type "Bearer" followed by a space and the JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
